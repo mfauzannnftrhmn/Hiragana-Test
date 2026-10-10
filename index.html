@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Belajar Kosakata Hiragana & Kuis Interaktif (日本語)</title>
-  <meta name="description" content="Website belajar kosakata Hiragana dan kuis interaktif berdasarkan Lembar Ajar Pertemuan 1-2. Dilengkapi audio pelafalan, flashcard, dan kuis pilihan ganda.">
-  
+  <meta name="description"
+    content="Website belajar kosakata Hiragana dan kuis interaktif berdasarkan Lembar Ajar Pertemuan 1-2. Dilengkapi audio pelafalan, flashcard, dan kuis pilihan ganda.">
+
   <!-- Google Fonts for authentic typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Yuji+Syuku&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Yuji+Syuku&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <!-- Background Decorative Motifs -->
@@ -31,7 +36,7 @@
           <p class="header-subtitle">Belajar Kosakata Hiragana & Kuis Interaktif</p>
         </div>
       </div>
-      
+
       <div class="header-stats">
         <div class="stat-pill">
           <span class="stat-num" id="totalVocabCount">68</span>
@@ -63,6 +68,10 @@
           <span class="nav-icon">🎯</span>
           <span>Kuis Interaktif</span>
         </button>
+        <button class="nav-btn" data-tab="tab-char-quiz" id="btnTabCharQuiz">
+          <span class="nav-icon">✍️</span>
+          <span>Kuis Huruf</span>
+        </button>
         <button class="nav-btn" data-tab="tab-rules" id="btnTabRules">
           <span class="nav-icon">📖</span>
           <span>Aturan Huruf</span>
@@ -80,12 +89,8 @@
       <div class="filter-card">
         <div class="search-box">
           <span class="search-icon">🔍</span>
-          <input 
-            type="text" 
-            id="searchInput" 
-            placeholder="Cari huruf Hiragana, Romaji, atau arti bahasa Indonesia..." 
-            autocomplete="off"
-          />
+          <input type="text" id="searchInput" placeholder="Cari huruf Hiragana, Romaji, atau arti bahasa Indonesia..."
+            autocomplete="off" />
           <button id="clearSearchBtn" class="clear-btn" title="Hapus pencarian">✕</button>
         </div>
 
@@ -373,6 +378,162 @@
       </div>
     </section>
 
+    <!-- ==================== TAB 5: KUIS HURUF PER KARAKTER ==================== -->
+    <section id="tab-char-quiz" class="tab-panel">
+      <!-- Char Quiz Setup Screen -->
+      <div id="charQuizSetupScreen" class="quiz-box">
+        <div class="quiz-header">
+          <div class="quiz-icon-header">✍️</div>
+          <h2>Kuis Per Huruf Hiragana</h2>
+          <p>Latih kemampuan mengenali huruf Hiragana satu per satu. Pilih mode dan grup huruf!</p>
+        </div>
+
+        <div class="quiz-config-grid">
+          <div class="config-group">
+            <label class="config-label">Mode Kuis:</label>
+            <div class="radio-cards">
+              <label class="radio-card">
+                <input type="radio" name="charQuizType" value="hiraganaToRomaji" checked>
+                <div class="card-radio-content">
+                  <strong>Hiragana ➔ Romaji</strong>
+                  <span>Lihat huruf Hiragana, tebak bacaan Romaji-nya</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="charQuizType" value="romajiToHiragana">
+                <div class="card-radio-content">
+                  <strong>Romaji ➔ Hiragana</strong>
+                  <span>Lihat bacaan Romaji, tebak huruf Hiragana-nya</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="config-group">
+            <label class="config-label">Grup Huruf:</label>
+            <select id="charQuizGroupSelect" class="styled-select full-width">
+              <option value="all">Semua Huruf (107 karakter)</option>
+              <option value="gojuon">Gojuon - 46 Huruf Dasar</option>
+              <option value="dakuon">Dakuon - Suara Bergetar (゛)</option>
+              <option value="handakuon">Handakuon - Bunyi P (゜)</option>
+              <option value="yoon">Yōon - Gabungan (きゃ, しゃ, ...)</option>
+            </select>
+          </div>
+
+          <div class="config-group">
+            <label class="config-label">Jumlah Soal:</label>
+            <div class="number-pills" id="charQuizNumPills">
+              <button type="button" class="num-pill active" data-amount="10">10 Soal</button>
+              <button type="button" class="num-pill" data-amount="20">20 Soal</button>
+              <button type="button" class="num-pill" data-amount="30">30 Soal</button>
+              <button type="button" class="num-pill" data-amount="all">Semua</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-start-action">
+          <button id="btnStartCharQuiz" class="btn-primary btn-large">
+            Mulai Kuis Huruf 🚀
+          </button>
+        </div>
+      </div>
+
+      <!-- Char Quiz In-Progress Screen -->
+      <div id="charQuizPlayScreen" class="quiz-box hidden">
+        <div class="quiz-top-bar">
+          <div class="quiz-indicator">
+            Soal <span id="cqCurrentNum">1</span> / <span id="cqTotalNum">10</span>
+          </div>
+          <div class="quiz-score-badge">
+            Skor: <span id="cqLiveScore">0</span>
+          </div>
+          <button id="btnQuitCharQuiz" class="btn-quit" title="Keluar dari Kuis">✕ Selesai</button>
+        </div>
+
+        <div class="progress-bar-bg mb-4">
+          <div id="charQuizProgressBar" class="progress-bar-fill" style="width: 10%;"></div>
+        </div>
+
+        <!-- Question Prompt Area -->
+        <div class="question-container char-quiz-question">
+          <div class="question-tag" id="cqQuestionTypeTag">Tebak Romaji</div>
+          <div class="question-display char-quiz-display" id="cqQuestionPrompt">
+            あ
+          </div>
+          <div class="question-subtext" id="cqQuestionSubtext">
+            Grup: Gojuon (Dasar)
+          </div>
+          <button class="question-audio-btn" id="cqQuestionAudioBtn" title="Dengarkan huruf">
+            🔊 Putar Suara
+          </button>
+        </div>
+
+        <!-- Answer Options (4 Multiple Choice) -->
+        <div class="options-grid" id="cqOptionsContainer">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Feedback & Explanation Box -->
+        <div id="cqAnswerFeedbackBox" class="feedback-box hidden">
+          <div class="feedback-icon" id="cqFeedbackIcon">✅</div>
+          <div class="feedback-content">
+            <h4 id="cqFeedbackTitle">Benar!</h4>
+            <p id="cqFeedbackDetail">あ dibaca "a".</p>
+          </div>
+          <button id="btnNextCharQuestion" class="btn-primary">
+            Lanjut Soal Berikutnya ❯
+          </button>
+        </div>
+      </div>
+
+      <!-- Char Quiz Result Screen -->
+      <div id="charQuizResultScreen" class="quiz-box hidden">
+        <div class="result-header">
+          <div class="result-trophy" id="cqResultEmoji">🏆</div>
+          <h2 id="cqResultTitle">Luar Biasa!</h2>
+          <p id="cqResultSubtitle">Kamu telah menyelesaikan kuis huruf dengan sangat baik.</p>
+        </div>
+
+        <div class="result-score-circle">
+          <div class="score-number" id="cqResultFinalScore">100</div>
+          <div class="score-label">NILAI AKHIR</div>
+        </div>
+
+        <div class="result-summary-stats">
+          <div class="stat-box correct">
+            <span class="stat-val" id="cqResultCorrectCount">10</span>
+            <span class="stat-name">Benar</span>
+          </div>
+          <div class="stat-box wrong">
+            <span class="stat-val" id="cqResultWrongCount">0</span>
+            <span class="stat-name">Salah</span>
+          </div>
+          <div class="stat-box percent">
+            <span class="stat-val" id="cqResultAccuracy">100%</span>
+            <span class="stat-name">Akurasi</span>
+          </div>
+        </div>
+
+        <!-- Wrong review -->
+        <div id="cqWrongReviewContainer" class="wrong-review-container hidden">
+          <h3>Huruf yang Perlu Dipelajari Lagi:</h3>
+          <div id="cqWrongReviewList" class="wrong-list"></div>
+        </div>
+
+        <div class="result-actions">
+          <button id="btnRetryCharQuiz" class="btn-primary">
+            🔄 Main Lagi
+          </button>
+          <button id="btnRetryCharWrongOnly" class="btn-secondary hidden">
+            ⚠️ Ulangi Huruf yang Salah
+          </button>
+          <button id="btnCharQuizToVocab" class="btn-secondary">
+            📚 Kembali ke Kosakata
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- ==================== TAB 4: ATURAN HURUF JEPANG ==================== -->
     <section id="tab-rules" class="tab-panel">
       <div class="rules-container">
@@ -424,17 +585,90 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td><strong>Vokal</strong></td><td>あ (a)</td><td>い (i)</td><td>う (u)</td><td>え (e)</td><td>お (o)</td></tr>
-                <tr><td><strong>k-line</strong></td><td>か (ka)</td><td>き (ki)</td><td>く (ku)</td><td>け (ke)</td><td>こ (ko)</td></tr>
-                <tr><td><strong>s-line</strong></td><td>さ (sa)</td><td>し (shi)</td><td>す (su)</td><td>せ (se)</td><td>そ (so)</td></tr>
-                <tr><td><strong>t-line</strong></td><td>た (ta)</td><td>ち (chi)</td><td>つ (tsu)</td><td>て (te)</td><td>と (to)</td></tr>
-                <tr><td><strong>n-line</strong></td><td>な (na)</td><td>に (ni)</td><td>ぬ (nu)</td><td>ね (ne)</td><td>の (no)</td></tr>
-                <tr><td><strong>h-line</strong></td><td>は (ha)</td><td>ひ (hi)</td><td>ふ (fu)</td><td>へ (he)</td><td>ほ (ho)</td></tr>
-                <tr><td><strong>m-line</strong></td><td>ま (ma)</td><td>み (mi)</td><td>む (mu)</td><td>め (me)</td><td>も (mo)</td></tr>
-                <tr><td><strong>y-line</strong></td><td>や (ya)</td><td>-</td><td>ゆ (yu)</td><td>-</td><td>よ (yo)</td></tr>
-                <tr><td><strong>r-line</strong></td><td>ら (ra)</td><td>り (ri)</td><td>る (ru)</td><td>れ (re)</td><td>ろ (ro)</td></tr>
-                <tr><td><strong>w-line</strong></td><td>わ (wa)</td><td>-</td><td>-</td><td>-</td><td>を (wo/o)</td></tr>
-                <tr><td><strong>n</strong></td><td colspan="5">ん (n) - Bunyi sengau konsonan penutup</td></tr>
+                <tr>
+                  <td><strong>Vokal</strong></td>
+                  <td>あ (a)</td>
+                  <td>い (i)</td>
+                  <td>う (u)</td>
+                  <td>え (e)</td>
+                  <td>お (o)</td>
+                </tr>
+                <tr>
+                  <td><strong>k-line</strong></td>
+                  <td>か (ka)</td>
+                  <td>き (ki)</td>
+                  <td>く (ku)</td>
+                  <td>け (ke)</td>
+                  <td>こ (ko)</td>
+                </tr>
+                <tr>
+                  <td><strong>s-line</strong></td>
+                  <td>さ (sa)</td>
+                  <td>し (shi)</td>
+                  <td>す (su)</td>
+                  <td>せ (se)</td>
+                  <td>そ (so)</td>
+                </tr>
+                <tr>
+                  <td><strong>t-line</strong></td>
+                  <td>た (ta)</td>
+                  <td>ち (chi)</td>
+                  <td>つ (tsu)</td>
+                  <td>て (te)</td>
+                  <td>と (to)</td>
+                </tr>
+                <tr>
+                  <td><strong>n-line</strong></td>
+                  <td>な (na)</td>
+                  <td>に (ni)</td>
+                  <td>ぬ (nu)</td>
+                  <td>ね (ne)</td>
+                  <td>の (no)</td>
+                </tr>
+                <tr>
+                  <td><strong>h-line</strong></td>
+                  <td>は (ha)</td>
+                  <td>ひ (hi)</td>
+                  <td>ふ (fu)</td>
+                  <td>へ (he)</td>
+                  <td>ほ (ho)</td>
+                </tr>
+                <tr>
+                  <td><strong>m-line</strong></td>
+                  <td>ま (ma)</td>
+                  <td>み (mi)</td>
+                  <td>む (mu)</td>
+                  <td>め (me)</td>
+                  <td>も (mo)</td>
+                </tr>
+                <tr>
+                  <td><strong>y-line</strong></td>
+                  <td>や (ya)</td>
+                  <td>-</td>
+                  <td>ゆ (yu)</td>
+                  <td>-</td>
+                  <td>よ (yo)</td>
+                </tr>
+                <tr>
+                  <td><strong>r-line</strong></td>
+                  <td>ら (ra)</td>
+                  <td>り (ri)</td>
+                  <td>る (ru)</td>
+                  <td>れ (re)</td>
+                  <td>ろ (ro)</td>
+                </tr>
+                <tr>
+                  <td><strong>w-line</strong></td>
+                  <td>わ (wa)</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>を (wo/o)</td>
+                </tr>
+                <tr>
+                  <td><strong>n</strong></td>
+                  <td colspan="5">ん (n) - Bunyi sengau konsonan penutup</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -455,4 +689,5 @@
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
+
 </html>

@@ -11,7 +11,7 @@
   --primary-dark: #52070D;
   --primary-light: #9B1D27;
   --primary-glow: rgba(121, 13, 22, 0.18);
-  
+
   --washi-bg: #E5D3AF;
   --washi-light: #FAF3E3;
   --washi-card: #FFFBF2;
@@ -25,11 +25,11 @@
 
   --accent-gold: #C08A3E;
   --accent-gold-light: #F4E7CE;
-  
+
   --success: #2E7D32;
   --success-bg: #E8F5E9;
   --success-border: #A5D6A7;
-  
+
   --danger: #C62828;
   --danger-bg: #FFEBEE;
   --danger-border: #EF9A9A;
@@ -41,14 +41,16 @@
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-full: 9999px;
-  
+
   --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
   --font-calligraphy: 'Yuji Syuku', 'Noto Serif JP', serif;
 }
 
 /* Reset & Base Styles */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -64,7 +66,7 @@ body {
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
-  background-image: 
+  background-image:
     radial-gradient(var(--washi-darker) 0.75px, transparent 0.75px),
     radial-gradient(var(--washi-darker) 0.75px, var(--washi-bg) 0.75px);
   background-size: 30px 30px;
@@ -79,7 +81,7 @@ body {
   right: 0;
   bottom: 0;
   background: radial-gradient(circle at 10% 20%, rgba(121, 13, 22, 0.03) 0%, transparent 40%),
-              radial-gradient(circle at 90% 80%, rgba(121, 13, 22, 0.04) 0%, transparent 45%);
+    radial-gradient(circle at 90% 80%, rgba(121, 13, 22, 0.04) 0%, transparent 45%);
   pointer-events: none;
   z-index: 0;
 }
@@ -276,6 +278,7 @@ body {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -422,11 +425,11 @@ body {
   transition: 0.25s;
 }
 
-.toggle-control input:checked + .toggle-slider {
+.toggle-control input:checked+.toggle-slider {
   background-color: var(--primary);
 }
 
-.toggle-control input:checked + .toggle-slider::before {
+.toggle-control input:checked+.toggle-slider::before {
   transform: translateX(16px);
 }
 
@@ -718,7 +721,8 @@ body {
   transform: rotateY(180deg);
 }
 
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -1241,6 +1245,7 @@ kbd {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1355,9 +1360,17 @@ kbd {
   text-transform: uppercase;
 }
 
-.stat-box.correct .stat-val { color: var(--success); }
-.stat-box.wrong .stat-val { color: var(--danger); }
-.stat-box.percent .stat-val { color: var(--primary); }
+.stat-box.correct .stat-val {
+  color: var(--success);
+}
+
+.stat-box.wrong .stat-val {
+  color: var(--danger);
+}
+
+.stat-box.percent .stat-val {
+  color: var(--primary);
+}
 
 .wrong-review-container {
   margin-bottom: 28px;
@@ -1414,6 +1427,53 @@ kbd {
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
+}
+
+/* ==================== TAB 5: KUIS HURUF ==================== */
+.char-quiz-question {
+  border-top-color: var(--accent-gold);
+}
+
+.char-quiz-display {
+  font-size: 4.5rem !important;
+  letter-spacing: 2px;
+  padding: 8px 0;
+}
+
+.char-quiz-display.romaji-mode {
+  font-family: var(--font-body) !important;
+  font-size: 3rem !important;
+  color: var(--accent-gold) !important;
+  font-style: italic;
+  font-weight: 800;
+}
+
+.option-btn .option-hiragana {
+  font-family: var(--font-jp);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.wrong-item-char {
+  font-family: var(--font-jp);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wrong-item-char .char-arrow {
+  font-size: 1rem;
+  color: var(--ink-muted);
+}
+
+.wrong-item-char .char-romaji {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--accent-gold);
+  font-style: italic;
 }
 
 .hidden {
@@ -1589,7 +1649,8 @@ kbd {
   font-size: 0.95rem;
 }
 
-.gojuon-table th, .gojuon-table td {
+.gojuon-table th,
+.gojuon-table td {
   border: 1px solid var(--washi-border);
   padding: 10px 12px;
 }
@@ -1653,7 +1714,7 @@ kbd {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .header-stats {
     width: 100%;
     justify-content: space-between;

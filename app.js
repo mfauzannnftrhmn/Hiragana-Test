@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!audioCtx) return;
     resumeAudioContext();
     const now = audioCtx.currentTime;
-    
+
     // Pleasant major two-note chime
     const osc1 = audioCtx.createOscillator();
     const gain1 = audioCtx.createGain();
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!audioCtx) return;
     resumeAudioContext();
     const now = audioCtx.currentTime;
-    
+
     // Soft low buzz/thud
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!audioCtx) return;
     resumeAudioContext();
     const now = audioCtx.currentTime;
-    
+
     // Quick soft paper flip click
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'ja-JP';
     utterance.rate = 0.85; // Slightly slower for better learning clarity
-    
+
     // Try to find a native Japanese voice if available
     const voices = window.speechSynthesis.getVoices();
     const jaVoice = voices.find(v => v.lang.includes('ja') || v.lang.includes('JP'));
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filtered = VOCAB_LIST.filter(item => {
       const matchCat = category === 'all' || item.kategori === category;
-      const matchQuery = !query || 
+      const matchQuery = !query ||
         item.hiragana.toLowerCase().includes(query) ||
         item.romaji.toLowerCase().includes(query) ||
         item.arti.toLowerCase().includes(query) ||
@@ -734,9 +734,340 @@ document.addEventListener('DOMContentLoaded', () => {
     switchTab('tab-vocab');
   });
 
+  // ==================== TAB 5: KUIS HURUF PER KARAKTER ====================
+  const charQuizState = {
+    mode: 'hiraganaToRomaji', // or 'romajiToHiragana'
+    group: 'all',
+    questionCount: 10,
+    questions: [],
+    currentIndex: 0,
+    score: 0,
+    wrongAnswers: [],
+    answerLocked: false
+  };
+
+  // DOM Elements - Char Quiz
+  const charQuizSetupScreen = document.getElementById('charQuizSetupScreen');
+  const charQuizPlayScreen = document.getElementById('charQuizPlayScreen');
+  const charQuizResultScreen = document.getElementById('charQuizResultScreen');
+  const charQuizGroupSelect = document.getElementById('charQuizGroupSelect');
+  const charQuizNumPillsContainer = document.getElementById('charQuizNumPills');
+  const charQuizNumPills = charQuizNumPillsContainer.querySelectorAll('.num-pill');
+
+  const cqCurrentNum = document.getElementById('cqCurrentNum');
+  const cqTotalNum = document.getElementById('cqTotalNum');
+  const cqLiveScore = document.getElementById('cqLiveScore');
+  const charQuizProgressBar = document.getElementById('charQuizProgressBar');
+  const cqQuestionTypeTag = document.getElementById('cqQuestionTypeTag');
+  const cqQuestionPrompt = document.getElementById('cqQuestionPrompt');
+  const cqQuestionSubtext = document.getElementById('cqQuestionSubtext');
+  const cqQuestionAudioBtn = document.getElementById('cqQuestionAudioBtn');
+  const cqOptionsContainer = document.getElementById('cqOptionsContainer');
+
+  const cqAnswerFeedbackBox = document.getElementById('cqAnswerFeedbackBox');
+  const cqFeedbackIcon = document.getElementById('cqFeedbackIcon');
+  const cqFeedbackTitle = document.getElementById('cqFeedbackTitle');
+  const cqFeedbackDetail = document.getElementById('cqFeedbackDetail');
+  const btnNextCharQuestion = document.getElementById('btnNextCharQuestion');
+
+  const cqResultEmoji = document.getElementById('cqResultEmoji');
+  const cqResultTitle = document.getElementById('cqResultTitle');
+  const cqResultSubtitle = document.getElementById('cqResultSubtitle');
+  const cqResultFinalScore = document.getElementById('cqResultFinalScore');
+  const cqResultCorrectCount = document.getElementById('cqResultCorrectCount');
+  const cqResultWrongCount = document.getElementById('cqResultWrongCount');
+  const cqResultAccuracy = document.getElementById('cqResultAccuracy');
+  const cqWrongReviewContainer = document.getElementById('cqWrongReviewContainer');
+  const cqWrongReviewList = document.getElementById('cqWrongReviewList');
+  const btnRetryCharQuiz = document.getElementById('btnRetryCharQuiz');
+  const btnRetryCharWrongOnly = document.getElementById('btnRetryCharWrongOnly');
+  const btnCharQuizToVocab = document.getElementById('btnCharQuizToVocab');
+  const btnStartCharQuiz = document.getElementById('btnStartCharQuiz');
+  const btnQuitCharQuiz = document.getElementById('btnQuitCharQuiz');
+
+  // Number pills for char quiz
+  charQuizNumPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      charQuizNumPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      charQuizState.questionCount = pill.dataset.amount === 'all' ? 'all' : parseInt(pill.dataset.amount, 10);
+    });
+  });
+
+  function startCharQuiz(customChars = null) {
+    const selectedRadio = document.querySelector('input[name="charQuizType"]:checked');
+    charQuizState.mode = selectedRadio ? selectedRadio.value : 'hiraganaToRomaji';
+    charQuizState.group = charQuizGroupSelect.value;
+    charQuizState.currentIndex = 0;
+    charQuizState.score = 0;
+    charQuizState.wrongAnswers = [];
+    charQuizState.answerLocked = false;
+
+    if (customChars) {
+      charQuizState.questions = customChars;
+    } else {
+      // Filter by group
+      let pool = HIRAGANA_CHARS;
+      if (charQuizState.group !== 'all') {
+        pool = HIRAGANA_CHARS.filter(c => c.group === charQuizState.group);
+      }
+
+      // Shuffle
+      const shuffled = [...pool].sort(() => 0.5 - Math.random());
+      const count = charQuizState.questionCount === 'all' ? shuffled.length : Math.min(charQuizState.questionCount, shuffled.length);
+      charQuizState.questions = shuffled.slice(0, count);
+    }
+
+    if (charQuizState.questions.length === 0) {
+      alert('Tidak ada huruf dalam grup yang dipilih.');
+      return;
+    }
+
+    // Switch screens
+    charQuizSetupScreen.classList.add('hidden');
+    charQuizResultScreen.classList.add('hidden');
+    charQuizPlayScreen.classList.remove('hidden');
+
+    displayCharQuestion();
+  }
+
+  function displayCharQuestion() {
+    charQuizState.answerLocked = false;
+    cqAnswerFeedbackBox.classList.add('hidden');
+
+    const total = charQuizState.questions.length;
+    const idx = charQuizState.currentIndex;
+    const item = charQuizState.questions[idx];
+
+    cqCurrentNum.textContent = idx + 1;
+    cqTotalNum.textContent = total;
+    cqLiveScore.textContent = charQuizState.score;
+
+    const progress = ((idx + 1) / total) * 100;
+    charQuizProgressBar.style.width = `${progress}%`;
+
+    if (charQuizState.mode === 'hiraganaToRomaji') {
+      cqQuestionTypeTag.textContent = 'Tebak Bacaan Romaji';
+      cqQuestionPrompt.textContent = item.char;
+      cqQuestionPrompt.classList.remove('romaji-mode');
+      cqQuestionSubtext.textContent = `Grup: ${item.groupLabel} • Deret: ${item.row}`;
+      cqQuestionAudioBtn.style.display = 'inline-block';
+      cqQuestionAudioBtn.dataset.speak = item.char;
+    } else {
+      cqQuestionTypeTag.textContent = 'Tebak Huruf Hiragana';
+      cqQuestionPrompt.textContent = item.romaji;
+      cqQuestionPrompt.classList.add('romaji-mode');
+      cqQuestionSubtext.textContent = `Grup: ${item.groupLabel} • Deret: ${item.row}`;
+      cqQuestionAudioBtn.style.display = 'none';
+    }
+
+    // Generate 4 options
+    const options = generateCharOptions(item, charQuizState.mode);
+    cqOptionsContainer.innerHTML = '';
+
+    const letters = ['A', 'B', 'C', 'D'];
+    options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+
+      if (charQuizState.mode === 'hiraganaToRomaji') {
+        // Show romaji as answers
+        btn.innerHTML = `
+          <span class="option-letter">${letters[i]}</span>
+          <span class="option-label">${opt.label}</span>
+        `;
+      } else {
+        // Show hiragana as answers
+        btn.innerHTML = `
+          <span class="option-letter">${letters[i]}</span>
+          <span class="option-label option-hiragana">${opt.label}</span>
+        `;
+      }
+
+      btn.addEventListener('click', () => handleCharOptionSelect(opt, btn, item));
+      cqOptionsContainer.appendChild(btn);
+    });
+  }
+
+  function generateCharOptions(correctItem, mode) {
+    const isTargetRomaji = mode === 'hiraganaToRomaji';
+    const correctLabel = isTargetRomaji ? correctItem.romaji : correctItem.char;
+
+    // Build distractor pool from all characters
+    const distractors = HIRAGANA_CHARS.filter(c => c.char !== correctItem.char);
+    const shuffledDistractors = [...distractors].sort(() => 0.5 - Math.random());
+
+    const chosen = [];
+    const usedLabels = new Set([correctLabel]);
+
+    for (const d of shuffledDistractors) {
+      const label = isTargetRomaji ? d.romaji : d.char;
+      if (!usedLabels.has(label)) {
+        usedLabels.add(label);
+        chosen.push({ label, isCorrect: false });
+      }
+      if (chosen.length === 3) break;
+    }
+
+    const allOptions = [
+      { label: correctLabel, isCorrect: true },
+      ...chosen
+    ];
+
+    return allOptions.sort(() => 0.5 - Math.random());
+  }
+
+  function handleCharOptionSelect(selectedOpt, btnElement, currentItem) {
+    if (charQuizState.answerLocked) return;
+    charQuizState.answerLocked = true;
+
+    const allBtns = cqOptionsContainer.querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true);
+
+    const isCorrect = selectedOpt.isCorrect;
+    const correctLabel = charQuizState.mode === 'hiraganaToRomaji'
+      ? currentItem.romaji
+      : currentItem.char;
+
+    if (isCorrect) {
+      btnElement.classList.add('selected-correct');
+      charQuizState.score += 10;
+      cqLiveScore.textContent = charQuizState.score;
+      playSuccessSfx();
+
+      cqFeedbackIcon.textContent = '🎉';
+      cqFeedbackTitle.textContent = 'Benar Sekali!';
+      cqFeedbackTitle.style.color = 'var(--success)';
+      cqFeedbackDetail.innerHTML = `<strong style="font-family: 'Noto Sans JP', sans-serif; font-size: 1.3rem;">${currentItem.char}</strong> dibaca <strong>"${currentItem.romaji}"</strong> (${currentItem.groupLabel})`;
+      cqAnswerFeedbackBox.className = 'feedback-box correct';
+    } else {
+      btnElement.classList.add('selected-wrong');
+      playErrorSfx();
+
+      // Highlight correct
+      allBtns.forEach(b => {
+        const labelText = b.querySelector('.option-label').textContent;
+        if (labelText === correctLabel) {
+          b.classList.add('reveal-correct');
+        }
+      });
+
+      charQuizState.wrongAnswers.push({
+        item: currentItem,
+        userAnswer: selectedOpt.label
+      });
+
+      cqFeedbackIcon.textContent = '❌';
+      cqFeedbackTitle.textContent = 'Kurang Tepat!';
+      cqFeedbackTitle.style.color = 'var(--danger)';
+      cqFeedbackDetail.innerHTML = `Jawaban yang benar: <strong style="font-family: 'Noto Sans JP', sans-serif; font-size: 1.3rem;">${currentItem.char}</strong> = <strong>"${currentItem.romaji}"</strong>`;
+      cqAnswerFeedbackBox.className = 'feedback-box wrong';
+    }
+
+    cqAnswerFeedbackBox.classList.remove('hidden');
+  }
+
+  btnNextCharQuestion.addEventListener('click', () => {
+    charQuizState.currentIndex++;
+    if (charQuizState.currentIndex < charQuizState.questions.length) {
+      displayCharQuestion();
+    } else {
+      finishCharQuiz();
+    }
+  });
+
+  function finishCharQuiz() {
+    charQuizPlayScreen.classList.add('hidden');
+    charQuizResultScreen.classList.remove('hidden');
+
+    const total = charQuizState.questions.length;
+    const correctCount = total - charQuizState.wrongAnswers.length;
+    const accuracy = Math.round((correctCount / total) * 100);
+
+    cqResultFinalScore.textContent = accuracy;
+    cqResultCorrectCount.textContent = correctCount;
+    cqResultWrongCount.textContent = charQuizState.wrongAnswers.length;
+    cqResultAccuracy.textContent = `${accuracy}%`;
+
+    if (accuracy === 100) {
+      cqResultEmoji.textContent = '🏆';
+      cqResultTitle.textContent = 'Sugoi! Sempurna!';
+      cqResultSubtitle.textContent = 'Kamu menguasai semua huruf dengan sempurna! すごい！';
+      playCelebrationSfx();
+    } else if (accuracy >= 80) {
+      cqResultEmoji.textContent = '🌟';
+      cqResultTitle.textContent = 'Sangat Bagus!';
+      cqResultSubtitle.textContent = 'Pengenalan huruf Hiragana kamu sudah kuat! Terus berlatih!';
+      playSuccessSfx();
+    } else if (accuracy >= 60) {
+      cqResultEmoji.textContent = '👍';
+      cqResultTitle.textContent = 'Cukup Bagus!';
+      cqResultSubtitle.textContent = 'Masih ada beberapa huruf yang perlu diperkuat. Ayo coba lagi!';
+    } else {
+      cqResultEmoji.textContent = '💪';
+      cqResultTitle.textContent = 'Tetap Semangat!';
+      cqResultSubtitle.textContent = 'Buka tabel Gojuon di tab Aturan Huruf dan hafalkan perlahan ya!';
+    }
+
+    // Wrong answers list
+    if (charQuizState.wrongAnswers.length > 0) {
+      cqWrongReviewContainer.classList.remove('hidden');
+      btnRetryCharWrongOnly.classList.remove('hidden');
+      cqWrongReviewList.innerHTML = charQuizState.wrongAnswers.map(({ item, userAnswer }) => `
+        <div class="wrong-item">
+          <div>
+            <div class="wrong-item-char">
+              ${item.char}
+              <span class="char-arrow">➔</span>
+              <span class="char-romaji">${item.romaji}</span>
+            </div>
+            <div class="wrong-item-ans">Jawabanmu: <del>${userAnswer}</del></div>
+          </div>
+          <button class="card-audio-btn" data-speak="${item.char}" title="Dengarkan pelafalan">🔊</button>
+        </div>
+      `).join('');
+
+      cqWrongReviewList.querySelectorAll('.card-audio-btn').forEach(b => {
+        b.addEventListener('click', () => speakJapanese(b.dataset.speak));
+      });
+    } else {
+      cqWrongReviewContainer.classList.add('hidden');
+      btnRetryCharWrongOnly.classList.add('hidden');
+    }
+  }
+
+  // Char Quiz Control Listeners
+  btnStartCharQuiz.addEventListener('click', () => startCharQuiz());
+
+  btnQuitCharQuiz.addEventListener('click', () => {
+    if (confirm('Apakah kamu yakin ingin mengakhiri kuis huruf yang sedang berlangsung?')) {
+      charQuizPlayScreen.classList.add('hidden');
+      charQuizSetupScreen.classList.remove('hidden');
+    }
+  });
+
+  cqQuestionAudioBtn.addEventListener('click', () => {
+    speakJapanese(cqQuestionAudioBtn.dataset.speak);
+  });
+
+  btnRetryCharQuiz.addEventListener('click', () => {
+    charQuizResultScreen.classList.add('hidden');
+    charQuizSetupScreen.classList.remove('hidden');
+  });
+
+  btnRetryCharWrongOnly.addEventListener('click', () => {
+    const wrongChars = charQuizState.wrongAnswers.map(w => w.item);
+    startCharQuiz(wrongChars);
+  });
+
+  btnCharQuizToVocab.addEventListener('click', () => {
+    switchTab('tab-vocab');
+  });
+
   // ==================== INITIALIZATION ====================
   initCounters();
   renderVocabList();
   renderRulesSection();
   updateFlashcardList();
 });
+

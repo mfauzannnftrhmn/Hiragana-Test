@@ -679,3 +679,132 @@ const VOCAB_LIST = [
     catatan: "Chōon bunyi panjang (aa)."
   }
 ];
+
+/**
+ * Data huruf Hiragana per karakter untuk Kuis Huruf
+ * Termasuk Gojuon (dasar), Dakuon (suara bergetar), Handakuon (bunyi p), dan Yoon (gabungan)
+ */
+const HIRAGANA_CHARS = [
+  // === Gojuon (五十音) - 46 huruf dasar ===
+  // Vokal
+  { char: "あ", romaji: "a", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Vokal" },
+  { char: "い", romaji: "i", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Vokal" },
+  { char: "う", romaji: "u", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Vokal" },
+  { char: "え", romaji: "e", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Vokal" },
+  { char: "お", romaji: "o", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Vokal" },
+  // K-line
+  { char: "か", romaji: "ka", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "K-line" },
+  { char: "き", romaji: "ki", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "K-line" },
+  { char: "く", romaji: "ku", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "K-line" },
+  { char: "け", romaji: "ke", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "K-line" },
+  { char: "こ", romaji: "ko", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "K-line" },
+  // S-line
+  { char: "さ", romaji: "sa", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "S-line" },
+  { char: "し", romaji: "shi", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "S-line" },
+  { char: "す", romaji: "su", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "S-line" },
+  { char: "せ", romaji: "se", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "S-line" },
+  { char: "そ", romaji: "so", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "S-line" },
+  // T-line
+  { char: "た", romaji: "ta", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "T-line" },
+  { char: "ち", romaji: "chi", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "T-line" },
+  { char: "つ", romaji: "tsu", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "T-line" },
+  { char: "て", romaji: "te", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "T-line" },
+  { char: "と", romaji: "to", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "T-line" },
+  // N-line
+  { char: "な", romaji: "na", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "N-line" },
+  { char: "に", romaji: "ni", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "N-line" },
+  { char: "ぬ", romaji: "nu", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "N-line" },
+  { char: "ね", romaji: "ne", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "N-line" },
+  { char: "の", romaji: "no", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "N-line" },
+  // H-line
+  { char: "は", romaji: "ha", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "H-line" },
+  { char: "ひ", romaji: "hi", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "H-line" },
+  { char: "ふ", romaji: "fu", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "H-line" },
+  { char: "へ", romaji: "he", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "H-line" },
+  { char: "ほ", romaji: "ho", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "H-line" },
+  // M-line
+  { char: "ま", romaji: "ma", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "M-line" },
+  { char: "み", romaji: "mi", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "M-line" },
+  { char: "む", romaji: "mu", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "M-line" },
+  { char: "め", romaji: "me", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "M-line" },
+  { char: "も", romaji: "mo", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "M-line" },
+  // Y-line
+  { char: "や", romaji: "ya", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Y-line" },
+  { char: "ゆ", romaji: "yu", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Y-line" },
+  { char: "よ", romaji: "yo", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "Y-line" },
+  // R-line
+  { char: "ら", romaji: "ra", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "R-line" },
+  { char: "り", romaji: "ri", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "R-line" },
+  { char: "る", romaji: "ru", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "R-line" },
+  { char: "れ", romaji: "re", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "R-line" },
+  { char: "ろ", romaji: "ro", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "R-line" },
+  // W-line
+  { char: "わ", romaji: "wa", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "W-line" },
+  { char: "を", romaji: "wo", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "W-line" },
+  // N
+  { char: "ん", romaji: "n", group: "gojuon", groupLabel: "Gojuon (Dasar)", row: "N" },
+
+  // === Dakuon (濁音) - Suara bergetar ===
+  { char: "が", romaji: "ga", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "G-line" },
+  { char: "ぎ", romaji: "gi", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "G-line" },
+  { char: "ぐ", romaji: "gu", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "G-line" },
+  { char: "げ", romaji: "ge", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "G-line" },
+  { char: "ご", romaji: "go", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "G-line" },
+  { char: "ざ", romaji: "za", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "Z-line" },
+  { char: "じ", romaji: "ji", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "Z-line" },
+  { char: "ず", romaji: "zu", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "Z-line" },
+  { char: "ぜ", romaji: "ze", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "Z-line" },
+  { char: "ぞ", romaji: "zo", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "Z-line" },
+  { char: "だ", romaji: "da", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "D-line" },
+  { char: "ぢ", romaji: "di", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "D-line" },
+  { char: "づ", romaji: "du", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "D-line" },
+  { char: "で", romaji: "de", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "D-line" },
+  { char: "ど", romaji: "do", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "D-line" },
+  { char: "ば", romaji: "ba", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "B-line" },
+  { char: "び", romaji: "bi", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "B-line" },
+  { char: "ぶ", romaji: "bu", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "B-line" },
+  { char: "べ", romaji: "be", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "B-line" },
+  { char: "ぼ", romaji: "bo", group: "dakuon", groupLabel: "Dakuon (Bergetar)", row: "B-line" },
+
+  // === Handakuon (半濁音) - Bunyi P ===
+  { char: "ぱ", romaji: "pa", group: "handakuon", groupLabel: "Handakuon (Bunyi P)", row: "P-line" },
+  { char: "ぴ", romaji: "pi", group: "handakuon", groupLabel: "Handakuon (Bunyi P)", row: "P-line" },
+  { char: "ぷ", romaji: "pu", group: "handakuon", groupLabel: "Handakuon (Bunyi P)", row: "P-line" },
+  { char: "ぺ", romaji: "pe", group: "handakuon", groupLabel: "Handakuon (Bunyi P)", row: "P-line" },
+  { char: "ぽ", romaji: "po", group: "handakuon", groupLabel: "Handakuon (Bunyi P)", row: "P-line" },
+
+  // === Yoon (拗音) - Gabungan ===
+  { char: "きゃ", romaji: "kya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "K-yoon" },
+  { char: "きゅ", romaji: "kyu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "K-yoon" },
+  { char: "きょ", romaji: "kyo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "K-yoon" },
+  { char: "しゃ", romaji: "sha", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "S-yoon" },
+  { char: "しゅ", romaji: "shu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "S-yoon" },
+  { char: "しょ", romaji: "sho", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "S-yoon" },
+  { char: "ちゃ", romaji: "cha", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "T-yoon" },
+  { char: "ちゅ", romaji: "chu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "T-yoon" },
+  { char: "ちょ", romaji: "cho", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "T-yoon" },
+  { char: "にゃ", romaji: "nya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "N-yoon" },
+  { char: "にゅ", romaji: "nyu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "N-yoon" },
+  { char: "にょ", romaji: "nyo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "N-yoon" },
+  { char: "ひゃ", romaji: "hya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "H-yoon" },
+  { char: "ひゅ", romaji: "hyu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "H-yoon" },
+  { char: "ひょ", romaji: "hyo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "H-yoon" },
+  { char: "みゃ", romaji: "mya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "M-yoon" },
+  { char: "みゅ", romaji: "myu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "M-yoon" },
+  { char: "みょ", romaji: "myo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "M-yoon" },
+  { char: "りゃ", romaji: "rya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "R-yoon" },
+  { char: "りゅ", romaji: "ryu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "R-yoon" },
+  { char: "りょ", romaji: "ryo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "R-yoon" },
+  { char: "ぎゃ", romaji: "gya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "G-yoon" },
+  { char: "ぎゅ", romaji: "gyu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "G-yoon" },
+  { char: "ぎょ", romaji: "gyo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "G-yoon" },
+  { char: "じゃ", romaji: "ja", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "Z-yoon" },
+  { char: "じゅ", romaji: "ju", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "Z-yoon" },
+  { char: "じょ", romaji: "jo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "Z-yoon" },
+  { char: "びゃ", romaji: "bya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "B-yoon" },
+  { char: "びゅ", romaji: "byu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "B-yoon" },
+  { char: "びょ", romaji: "byo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "B-yoon" },
+  { char: "ぴゃ", romaji: "pya", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "P-yoon" },
+  { char: "ぴゅ", romaji: "pyu", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "P-yoon" },
+  { char: "ぴょ", romaji: "pyo", group: "yoon", groupLabel: "Yōon (Gabungan)", row: "P-yoon" }
+];
