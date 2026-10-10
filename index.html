@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belajar Kosakata Hiragana & Kuis Interaktif (日本語)</title>
+  <meta name="description" content="Website belajar kosakata Hiragana dan kuis interaktif berdasarkan Lembar Ajar Pertemuan 1-2. Dilengkapi audio pelafalan, flashcard, dan kuis pilihan ganda.">
+  
+  <!-- Google Fonts for authentic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Yuji+Syuku&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Decorative Motifs -->
+  <div class="bg-pattern" aria-hidden="true"></div>
+
+  <!-- Header Section -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="header-brand">
+        <div class="torii-badge">
+          <span class="torii-kanji">日</span>
+        </div>
+        <div>
+          <div class="header-tag">Lembar Ajar Pertemuan 1-2</div>
+          <h1 class="header-title">にほんご・日本語学習</h1>
+          <p class="header-subtitle">Belajar Kosakata Hiragana & Kuis Interaktif</p>
+        </div>
+      </div>
+      
+      <div class="header-stats">
+        <div class="stat-pill">
+          <span class="stat-num" id="totalVocabCount">68</span>
+          <span class="stat-lbl">Kosakata</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">4</span>
+          <span class="stat-lbl">Kategori</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">🔊</span>
+          <span class="stat-lbl">Audio Suara</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" aria-label="Menu Utama">
+      <div class="nav-container">
+        <button class="nav-btn active" data-tab="tab-vocab" id="btnTabVocab">
+          <span class="nav-icon">📚</span>
+          <span>Daftar Kosakata</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-flashcard" id="btnTabFlashcard">
+          <span class="nav-icon">🎴</span>
+          <span>Flashcard Hafalan</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-quiz" id="btnTabQuiz">
+          <span class="nav-icon">🎯</span>
+          <span>Kuis Interaktif</span>
+        </button>
+        <button class="nav-btn" data-tab="tab-rules" id="btnTabRules">
+          <span class="nav-icon">📖</span>
+          <span>Aturan Huruf</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-container">
+
+    <!-- ==================== TAB 1: DAFTAR KOSAKATA ==================== -->
+    <section id="tab-vocab" class="tab-panel active">
+      <!-- Search and Filter Bar -->
+      <div class="filter-card">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Cari huruf Hiragana, Romaji, atau arti bahasa Indonesia..." 
+            autocomplete="off"
+          />
+          <button id="clearSearchBtn" class="clear-btn" title="Hapus pencarian">✕</button>
+        </div>
+
+        <div class="filter-controls">
+          <div class="category-pills" id="categoryFilterContainer">
+            <button class="cat-pill active" data-cat="all">Semua (<span id="countAll">68</span>)</button>
+            <button class="cat-pill" data-cat="salam">Salam & Ungkapan (<span id="countSalam">0</span>)</button>
+            <button class="cat-pill" data-cat="orang">Orang & Kata Ganti (<span id="countOrang">0</span>)</button>
+            <button class="cat-pill" data-cat="keluarga">Keluarga (<span id="countKeluarga">0</span>)</button>
+            <button class="cat-pill" data-cat="gelar">Gelar / Panggilan (<span id="countGelar">0</span>)</button>
+          </div>
+
+          <div class="quick-toggles">
+            <label class="toggle-control">
+              <input type="checkbox" id="toggleRomaji" checked>
+              <span class="toggle-slider"></span>
+              <span class="toggle-text">Tampilkan Romaji</span>
+            </label>
+            <button id="btnPlayAllHelp" class="btn-secondary-sm" title="Panduan Audio">
+              ℹ️ Tips Audio
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Counter & Quick Action -->
+      <div class="vocab-header-info">
+        <div id="filterResultText" class="result-text">Menampilkan 68 kosakata</div>
+        <div class="sound-notice">
+          <span class="sound-badge">Klik tombol 🔊 pada kartu untuk mendengarkan lafal Jepang</span>
+        </div>
+      </div>
+
+      <!-- Vocab Grid -->
+      <div id="vocabGrid" class="vocab-grid">
+        <!-- Rendered by app.js -->
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: FLASHCARD ==================== -->
+    <section id="tab-flashcard" class="tab-panel">
+      <div class="flashcard-section">
+        <div class="flashcard-toolbar">
+          <div class="flashcard-cat-select">
+            <label for="flashcardCategory">Kategori:</label>
+            <select id="flashcardCategory" class="styled-select">
+              <option value="all">Semua Kosakata (68)</option>
+              <option value="salam">Salam & Ungkapan</option>
+              <option value="orang">Orang & Kata Ganti</option>
+              <option value="keluarga">Keluarga & Kerabat</option>
+              <option value="gelar">Panggilan & Gelar</option>
+            </select>
+          </div>
+
+          <div class="flashcard-actions">
+            <button id="btnShuffleFlashcards" class="btn-secondary" title="Acak Urutan Kartu">
+              🔀 Acak Kartu
+            </button>
+            <button id="btnResetFlashcards" class="btn-secondary" title="Kembali ke Awal">
+              🔄 Ulang dari Awal
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="flashcard-progress-wrap">
+          <div class="flashcard-count-text">
+            Kartu <strong id="fcCurrentIndex">1</strong> dari <strong id="fcTotalCards">68</strong>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="fcProgressBar" class="progress-bar-fill" style="width: 1.5%;"></div>
+          </div>
+        </div>
+
+        <!-- Flip Card Component -->
+        <div class="flashcard-wrapper">
+          <div class="flip-card" id="mainFlashcard">
+            <div class="flip-card-inner" id="flashcardInner">
+              <!-- Front Side -->
+              <div class="flip-card-front">
+                <div class="card-side-tag">HIRAGANA (Depan)</div>
+                <div class="fc-japanese-box">
+                  <div class="fc-hiragana" id="fcFrontHiragana">おはようございます</div>
+                </div>
+                <div class="fc-hint">Klik atau tekan Spasi untuk membalik kartu ↻</div>
+                <button class="fc-audio-btn" id="fcFrontAudioBtn" title="Dengarkan pengucapan">
+                  🔊 Dengarkan Suara
+                </button>
+              </div>
+
+              <!-- Back Side -->
+              <div class="flip-card-back">
+                <div class="card-side-tag">ARTI & ROMAJI (Belakang)</div>
+                <div class="fc-romaji" id="fcBackRomaji">ohayou gozaimasu</div>
+                <div class="fc-meaning" id="fcBackArti">Selamat pagi</div>
+                <div class="fc-note" id="fcBackNote">Bentuk sopan (formal).</div>
+                <div class="fc-hint">Klik untuk membalik kembali ↻</div>
+                <button class="fc-audio-btn back-btn" id="fcBackAudioBtn" title="Dengarkan pengucapan">
+                  🔊 Putar Audio
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls (Prev, Flip, Next) -->
+        <div class="flashcard-controls">
+          <button id="btnPrevCard" class="btn-nav" title="Kartu Sebelumnya (Panah Kiri)">
+            ❮ Sebelumnya
+          </button>
+          <button id="btnFlipCard" class="btn-primary" title="Balik Kartu (Spasi)">
+            ↻ Balik Kartu
+          </button>
+          <button id="btnNextCard" class="btn-nav" title="Kartu Selanjutnya (Panah Kanan)">
+            Selanjutnya ❯
+          </button>
+        </div>
+        <div class="keyboard-guide">
+          Tip Shortcut: Gunakan <kbd>←</kbd> Sebelumnya, <kbd>→</kbd> Selanjutnya, <kbd>Spasi</kbd> Balik Kartu
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: KUIS INTERAKTIF ==================== -->
+    <section id="tab-quiz" class="tab-panel">
+      <!-- Quiz Setup Screen -->
+      <div id="quizSetupScreen" class="quiz-box">
+        <div class="quiz-header">
+          <div class="quiz-icon-header">🎯</div>
+          <h2>Uji Pemahaman Kosakata Hiragana</h2>
+          <p>Pilih mode kuis, kategori, dan jumlah soal untuk memulai latihan.</p>
+        </div>
+
+        <div class="quiz-config-grid">
+          <div class="config-group">
+            <label class="config-label">Tipe Soal:</label>
+            <div class="radio-cards">
+              <label class="radio-card">
+                <input type="radio" name="quizType" value="hiraganaToArti" checked>
+                <div class="card-radio-content">
+                  <strong>Hiragana ➔ Arti</strong>
+                  <span>Tebak arti bahasa Indonesia dari huruf Hiragana</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="quizType" value="artiToHiragana">
+                <div class="card-radio-content">
+                  <strong>Arti ➔ Hiragana</strong>
+                  <span>Tebak penulisan Hiragana dari arti bahasa Indonesia</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="quizType" value="romajiToHiragana">
+                <div class="card-radio-content">
+                  <strong>Romaji ➔ Hiragana</strong>
+                  <span>Cocokkan ejaan Romaji dengan tulisan Hiragana</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="config-group">
+            <label class="config-label">Kategori Soal:</label>
+            <select id="quizCategorySelect" class="styled-select full-width">
+              <option value="all">Semua Kategori (68 Kosakata)</option>
+              <option value="salam">Salam & Ungkapan Sehari-hari</option>
+              <option value="orang">Orang & Kata Ganti</option>
+              <option value="keluarga">Keluarga & Kerabat</option>
+              <option value="gelar">Panggilan & Gelar</option>
+            </select>
+          </div>
+
+          <div class="config-group">
+            <label class="config-label">Jumlah Soal:</label>
+            <div class="number-pills">
+              <button type="button" class="num-pill active" data-amount="10">10 Soal</button>
+              <button type="button" class="num-pill" data-amount="20">20 Soal</button>
+              <button type="button" class="num-pill" data-amount="30">30 Soal</button>
+              <button type="button" class="num-pill" data-amount="all">Semua Soal</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-start-action">
+          <button id="btnStartQuiz" class="btn-primary btn-large">
+            Mulai Kuis Sekarang 🚀
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz In-Progress Screen -->
+      <div id="quizPlayScreen" class="quiz-box hidden">
+        <!-- Progress bar and score status -->
+        <div class="quiz-top-bar">
+          <div class="quiz-indicator">
+            Soal <span id="qCurrentNum">1</span> / <span id="qTotalNum">10</span>
+          </div>
+          <div class="quiz-score-badge">
+            Skor: <span id="qLiveScore">0</span>
+          </div>
+          <button id="btnQuitQuiz" class="btn-quit" title="Keluar dari Kuis">✕ Selesai</button>
+        </div>
+
+        <div class="progress-bar-bg mb-4">
+          <div id="quizProgressBar" class="progress-bar-fill" style="width: 10%;"></div>
+        </div>
+
+        <!-- Question Prompt Area -->
+        <div class="question-container">
+          <div class="question-tag" id="questionTypeTag">Tebak Arti Bahasa Indonesia</div>
+          <div class="question-display" id="questionPrompt">
+            おはようございます
+          </div>
+          <div class="question-subtext" id="questionSubtext">
+            (ohayou gozaimasu)
+          </div>
+          <button class="question-audio-btn" id="questionAudioBtn" title="Dengarkan soal">
+            🔊 Putar Suara
+          </button>
+        </div>
+
+        <!-- Answer Options (4 Multiple Choice) -->
+        <div class="options-grid" id="optionsContainer">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Feedback & Explanation Box -->
+        <div id="answerFeedbackBox" class="feedback-box hidden">
+          <div class="feedback-icon" id="feedbackIcon">✅</div>
+          <div class="feedback-content">
+            <h4 id="feedbackTitle">Benar!</h4>
+            <p id="feedbackDetail">おはようございます (ohayou gozaimasu) artinya Selamat pagi.</p>
+          </div>
+          <button id="btnNextQuestion" class="btn-primary">
+            Lanjut Soal Berikutnya ❯
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz Result Screen -->
+      <div id="quizResultScreen" class="quiz-box hidden">
+        <div class="result-header">
+          <div class="result-trophy" id="resultEmoji">🏆</div>
+          <h2 id="resultTitle">Luar Biasa!</h2>
+          <p id="resultSubtitle">Kamu telah menyelesaikan kuis dengan sangat baik.</p>
+        </div>
+
+        <div class="result-score-circle">
+          <div class="score-number" id="resultFinalScore">100</div>
+          <div class="score-label">NILAI AKHIR</div>
+        </div>
+
+        <div class="result-summary-stats">
+          <div class="stat-box correct">
+            <span class="stat-val" id="resultCorrectCount">10</span>
+            <span class="stat-name">Benar</span>
+          </div>
+          <div class="stat-box wrong">
+            <span class="stat-val" id="resultWrongCount">0</span>
+            <span class="stat-name">Salah</span>
+          </div>
+          <div class="stat-box percent">
+            <span class="stat-val" id="resultAccuracy">100%</span>
+            <span class="stat-name">Akurasi</span>
+          </div>
+        </div>
+
+        <!-- Incorrect questions review list (if any) -->
+        <div id="wrongQuestionsReview" class="wrong-review-container hidden">
+          <h3>Daftar Soal yang Perlu Dipelajari Lagi:</h3>
+          <div id="wrongReviewList" class="wrong-list"></div>
+        </div>
+
+        <div class="result-actions">
+          <button id="btnRetryQuiz" class="btn-primary">
+            🔄 Main Lagi
+          </button>
+          <button id="btnRetryWrongOnly" class="btn-secondary hidden">
+            ⚠️ Ulangi Soal yang Salah Saja
+          </button>
+          <button id="btnBackToVocab" class="btn-secondary">
+            📚 Kembali ke Kosakata
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: ATURAN HURUF JEPANG ==================== -->
+    <section id="tab-rules" class="tab-panel">
+      <div class="rules-container">
+        <div class="rules-header">
+          <h2>Pedoman Huruf dalam Bahasa Jepang</h2>
+          <p>Ringkasan materi huruf dasar dari Lembar Ajar Pertemuan 1-2 oleh Dosen Pengampu.</p>
+        </div>
+
+        <!-- Classification of Japanese Writing Systems -->
+        <div class="system-intro-grid">
+          <div class="sys-card active-card">
+            <div class="sys-badge">Fokus Kita</div>
+            <h3>Hiragana (ひらがな)</h3>
+            <p>Digunakan untuk menulis <strong>kata asli Jepang</strong> dan partikel tata bahasa.</p>
+          </div>
+          <div class="sys-card">
+            <h3>Katakana (カタカナ)</h3>
+            <p>Digunakan untuk menulis <strong>kata serapan asing</strong> termasuk nama orang asing.</p>
+          </div>
+          <div class="sys-card">
+            <h3>Kanji (かんじ)</h3>
+            <p>Mewakili <strong>makna/arti</strong> (ideogram), bukan sekadar bunyi bunyi.</p>
+          </div>
+          <div class="sys-card">
+            <h3>Rōmaji & Arabiaji</h3>
+            <p><strong>Rōmaji:</strong> Tulisan latin (a-z) transliterasi.<br><strong>Arabiaji:</strong> Angka 0-9.</p>
+          </div>
+        </div>
+
+        <h3 class="rules-subheading">Aturan Pembacaan & Perubahan Huruf Kana</h3>
+        <div class="rules-grid" id="rulesGrid">
+          <!-- Populated from data.js -->
+        </div>
+
+        <!-- Gojuon Reference Chart -->
+        <div class="gojuon-table-card">
+          <h3>Tabel 50 Bunyi Dasar (Gojūon - 五十音)</h3>
+          <p class="table-sub">Deret vokal dan konsonan dasar Hiragana:</p>
+          <div class="table-responsive">
+            <table class="gojuon-table">
+              <thead>
+                <tr>
+                  <th>Deret</th>
+                  <th>a (あ)</th>
+                  <th>i (い)</th>
+                  <th>u (う)</th>
+                  <th>e (え)</th>
+                  <th>o (お)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Vokal</strong></td><td>あ (a)</td><td>い (i)</td><td>う (u)</td><td>え (e)</td><td>お (o)</td></tr>
+                <tr><td><strong>k-line</strong></td><td>か (ka)</td><td>き (ki)</td><td>く (ku)</td><td>け (ke)</td><td>こ (ko)</td></tr>
+                <tr><td><strong>s-line</strong></td><td>さ (sa)</td><td>し (shi)</td><td>す (su)</td><td>せ (se)</td><td>そ (so)</td></tr>
+                <tr><td><strong>t-line</strong></td><td>た (ta)</td><td>ち (chi)</td><td>つ (tsu)</td><td>て (te)</td><td>と (to)</td></tr>
+                <tr><td><strong>n-line</strong></td><td>な (na)</td><td>に (ni)</td><td>ぬ (nu)</td><td>ね (ne)</td><td>の (no)</td></tr>
+                <tr><td><strong>h-line</strong></td><td>は (ha)</td><td>ひ (hi)</td><td>ふ (fu)</td><td>へ (he)</td><td>ほ (ho)</td></tr>
+                <tr><td><strong>m-line</strong></td><td>ま (ma)</td><td>み (mi)</td><td>む (mu)</td><td>め (me)</td><td>も (mo)</td></tr>
+                <tr><td><strong>y-line</strong></td><td>や (ya)</td><td>-</td><td>ゆ (yu)</td><td>-</td><td>よ (yo)</td></tr>
+                <tr><td><strong>r-line</strong></td><td>ら (ra)</td><td>り (ri)</td><td>る (ru)</td><td>れ (re)</td><td>ろ (ro)</td></tr>
+                <tr><td><strong>w-line</strong></td><td>わ (wa)</td><td>-</td><td>-</td><td>-</td><td>を (wo/o)</td></tr>
+                <tr><td><strong>n</strong></td><td colspan="5">ん (n) - Bunyi sengau konsonan penutup</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-crest">🌸 日本語を勉強しましょう 🌸</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
